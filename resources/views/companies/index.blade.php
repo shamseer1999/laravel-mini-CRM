@@ -5,8 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ 'Companies List' }}</div>
-
+                <div class="card-header">{{ 'Companies List' }}
+                <a href="{{ route('companies.create')}}" class="btn btn-primary btn-md ms-2">Add Company</a>
+                </div>
+                    
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
