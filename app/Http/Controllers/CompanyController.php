@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Models\Company;
 
+use Illuminate\Support\Facades\Mail;
+
+use App\Mail\CompanyRegister;
+
 class CompanyController extends Controller
 {
     /**
@@ -57,6 +61,8 @@ class CompanyController extends Controller
         $company->compay_logo=$filename;
         $company->website=$request->website;
         $company->save();
+
+        Mail::to(auth()->user()->email)->send(new CompanyRegister($company));
 
         return redirect()->route('companies.index');
 
