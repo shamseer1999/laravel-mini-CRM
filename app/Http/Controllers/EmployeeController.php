@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Company;
+
+use App\Models\Employee;
+
 class EmployeeController extends Controller
 {
     /**
@@ -13,7 +17,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $data['results']=Employee::with('companies')->paginate(10);
+        return view('employees.index',$data);
     }
 
     /**
@@ -23,7 +28,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        $data['companies']=Company::where('status',1)->get();
+        return view('employees.add',$data);
     }
 
     /**
@@ -34,7 +40,21 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate=$request->validate([
+            'name'=>'required',
+            'lname'=>'required',
+            ''
+        ]);
+
+        $employee = new Employee;
+        $employee->first_name=$validate['name'];
+        $employee->last_name=$validate['lname'];
+        $employee->email=$request->email;
+        $employee->company_id=$request->company;
+        $employee->phone=$request->phone;
+        $employee->save();
+
+        return redirect()->route('employees.index');
     }
 
     /**
