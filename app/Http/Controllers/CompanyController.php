@@ -64,7 +64,7 @@ class CompanyController extends Controller
 
         Mail::to(auth()->user()->email)->send(new CompanyRegister($company));
 
-        return redirect()->route('companies.index');
+        return redirect()->route('companies.index')->with('success','Company added successfully');
 
     }
 
@@ -128,7 +128,7 @@ class CompanyController extends Controller
         $company->website=$request->website;
         $company->update();
 
-        return redirect()->route('companies.index');
+        return redirect()->route('companies.index')->with('success','Company updated successfully');
 
     }
 
@@ -140,6 +140,12 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $company_id=decrypt($id);
+        $company=Company::find($company_id);
+        $company->status=2;
+        $company->update();
+
+        return redirect()->route('companies.index')->with('success','Company deleted successfully');
+
     }
 }

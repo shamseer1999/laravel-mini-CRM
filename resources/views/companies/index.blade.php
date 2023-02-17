@@ -8,7 +8,14 @@
                 <div class="card-header">{{ 'Companies List' }}
                 <a href="{{ route('companies.create')}}" class="btn btn-primary btn-md ms-2">Add Company</a>
                 </div>
-                    
+                @if (session()->has('success'))
+                    <br>
+                    <div class="container">
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    </div> 
+                @endif
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
@@ -32,6 +39,13 @@
                                         <td><img src="{{asset('storage/'.$item->compay_logo)}}" style="width:80px;height:80px;" alt=""></td>
                                         <td>
                                             <a href="{{route('companies.edit',encrypt($item->id))}}" class="btn btn-primary">Edit</a>
+                                            <form action="{{route('companies.destroy',encrypt($item->id))}}" method="post">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="_method" value="delete">
+                                                <br><button type="submit" class="btn btn-primary">Delete</button>
+                                            </form>
+                                           
                                         </td>
                                     </tr> 
                                 @endforeach
